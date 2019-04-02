@@ -13,7 +13,7 @@ int fifo_in(uint8_t data) {
   node_t *nodeptr;
   nodeptr = malloc(sizeof(node_t));
   nodeptr->data = data;
-  if (llist.size > 0 && llist.size <63) {
+  if (llist.size > 0 && llist.size < 63) {
     nodeptr->next = &llist.end;
     nodeptr->prev = llist.end.prev;
     llist.end.prev->next = nodeptr;
@@ -25,7 +25,7 @@ int fifo_in(uint8_t data) {
     llist.head.next = nodeptr;
     llist.end.prev = nodeptr;
     llist.size += 1;
-  }else if(llist.size > 62){
+  } else if (llist.size > 62) {
     fifo_out();
     nodeptr->next = &llist.end;
     nodeptr->prev = llist.end.prev;
@@ -41,11 +41,12 @@ uint8_t fifo_out() {
   if (llist.size != 1) {
     data = llist.head.next->data;
     llist.head.next = llist.head.next->next;
+    free(llist.head.next->prev);
     llist.head.next->prev = &llist.head;
     llist.size -= 1;
   } else if (llist.size == 0) {
     return 0;
-  }else if(llist.size == 1){
+  } else if (llist.size == 1) {
     return 255;
   }
   return data;
